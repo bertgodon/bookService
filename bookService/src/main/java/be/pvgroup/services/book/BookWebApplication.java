@@ -12,8 +12,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 
 @SpringBootApplication
+@EnableSwagger2
 @EntityScan("be.pvgroup.services.book")
 @EnableJpaRepositories("be.pvgroup.services.book")
 @PropertySource("classpath:db-config.properties")
