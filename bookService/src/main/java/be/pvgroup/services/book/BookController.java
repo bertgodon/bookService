@@ -1,6 +1,6 @@
 package be.pvgroup.services.book;
 
-import javax.inject.Inject;
+		import javax.inject.Inject;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiParam;
 
 @Api
 @RestController
+@RequestMapping(value = "/books")
 public class BookController {
 
 	@Inject BookRepository bookRepository;
