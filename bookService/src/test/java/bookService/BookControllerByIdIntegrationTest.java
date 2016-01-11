@@ -38,16 +38,14 @@ public class BookControllerByIdIntegrationTest {
 	private static final String BOOK_TITLE = "a new create book";
 	private static final String BOOK_DESCRIPTION = "lots of text";
 	private static final String NOT_EXISTING_ID = "9";
+	private static final String BOOK_ISBN = "a isbn";
+	private static final Long BOOK_ID = 2L;
 
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
 
     private MockMvc mockMvc;
-
-
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
     private Book book = new Book();
 
     @Autowired
@@ -56,16 +54,6 @@ public class BookControllerByIdIntegrationTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
-
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(
-                hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
-
-        Assert.assertNotNull("the JSON message converter must not be null",
-                this.mappingJackson2HttpMessageConverter);
-    }
-
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
@@ -73,10 +61,11 @@ public class BookControllerByIdIntegrationTest {
         this.bookRepository.deleteAll();
 
         Book newBook = new Book();
-        newBook.setId(1L);
+        newBook.setId(BOOK_ID);
         newBook.setTitle(BOOK_TITLE);
         newBook.setAuthor(BOOK_AUTHOR);
         newBook.setDescription(BOOK_DESCRIPTION);
+        newBook.setIsbn(BOOK_ISBN);
         this.book = bookRepository.save(newBook);
     }
 
@@ -92,17 +81,10 @@ public class BookControllerByIdIntegrationTest {
         mockMvc.perform(get("/books/books/" + book.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id", CoreMatchers.is(this.book.getId().intValue())))
-                .andExpect(jsonPath("$.title", CoreMatchers.is(BOOK_TITLE)))
-                .andExpect(jsonPath("$.description", CoreMatchers.is(BOOK_DESCRIPTION)))
-                .andExpect(jsonPath("$.author", CoreMatchers.is(BOOK_AUTHOR)));
-    }
-
-
-    protected String json(Object o) throws IOException {
-        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        this.mappingJackson2HttpMessageConverter.write(
-                o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
-        return mockHttpOutputMessage.getBodyAsString();
+                .andExpect(jsonPath("$.id", CoreMatchers.is(book.getId().intValue())))
+                .andExpect(jsonPath("$.title", CoreMatchers.is(book.getTitle())))
+                .andExpect(jsonPath("$.description", CoreMatchers.is(book.getDescription())))
+                .andExpect(jsonPath("$.isbn", CoreMatchers.is(book.getIsbn())))
+                .andExpect(jsonPath("$.author", CoreMatchers.is(book.getAuthor())));
     }
 }
