@@ -17,6 +17,10 @@ public interface BookRepository extends Repository<Book, Long>{
 	
 	public List<Book> findAll();
 	
+	public void deleteAll();
+
+	
 	@Query("SELECT count(*) from Book")
 	public int countAccounts();
+
 }
