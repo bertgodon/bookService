@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -24,11 +23,6 @@ public class BookWebApplication {
 
 	protected Logger logger = Logger.getLogger(BookWebApplication.class
 			.getName());
-
-	public static void main(String[] args) {
-		SpringApplication.run(BookWebApplication.class, args);
-	}
-
 
 	@Bean
 	public DataSource dataSource() {
