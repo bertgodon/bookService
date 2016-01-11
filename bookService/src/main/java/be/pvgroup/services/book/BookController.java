@@ -1,6 +1,6 @@
 package be.pvgroup.services.book;
 
-		import java.util.List;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -54,9 +54,11 @@ public class BookController {
 	@RequestMapping( method = RequestMethod.GET )
 	ResponseEntity<?> findAll() {
 		List<Book> books = bookRepository.findAll();
+		
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add("Access-Control-Allow-Origin", "*");
-		return new ResponseEntity<>(books, httpHeaders, HttpStatus.OK);	}
+		return new ResponseEntity<>(books, httpHeaders, HttpStatus.OK);
+	}
 	
 	@ApiOperation(value = "delete a book by ID")
 	@RequestMapping(value = "/books/{id}", method = RequestMethod.DELETE)
