@@ -26,7 +26,7 @@ public class BookController {
 	@Inject BookRepository bookRepository;
 	
 	@ApiOperation(value = "get a book by ID")
-	@RequestMapping(value = "/books/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Book> byId(@ApiParam(value = "", required = true)@PathVariable("id") Long id) {
 		Book book = bookRepository.findById(id);
 
@@ -61,7 +61,7 @@ public class BookController {
 	}
 	
 	@ApiOperation(value = "delete a book by ID")
-	@RequestMapping(value = "/books/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	ResponseEntity<?> deleteById(@ApiParam(value = "", required = true)@PathVariable("id") Long id) {
 		bookRepository.delete(id);
 		return new ResponseEntity<>(HttpStatus.GONE);

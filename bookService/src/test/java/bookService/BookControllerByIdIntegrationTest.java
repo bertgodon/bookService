@@ -1,20 +1,20 @@
 package bookService;
 
-import java.io.IOException;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,11 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 import be.pvgroup.services.book.Book;
 import be.pvgroup.services.book.BookRepository;
 import be.pvgroup.services.book.BookWebApplication;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = BookWebApplication.class)
@@ -71,14 +66,14 @@ public class BookControllerByIdIntegrationTest {
 
     @Test
     public void bookNotFound() throws Exception {
-        mockMvc.perform(get("/books/books/" + NOT_EXISTING_ID)
+        mockMvc.perform(get("/books/" + NOT_EXISTING_ID)
                 .contentType(contentType))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void readSingleBook() throws Exception {
-        mockMvc.perform(get("/books/books/" + book.getId()))
+        mockMvc.perform(get("/books/" + book.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.id", CoreMatchers.is(book.getId().intValue())))
